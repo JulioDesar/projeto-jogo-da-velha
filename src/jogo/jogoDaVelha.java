@@ -6,7 +6,7 @@ package jogo;
 /**         <Fernando Almeida>                                      **/
 /**                                                                 **/
 /**         Projeto SEMESTRAL I                                     **/
-/**         Arquivo: <nome do arquivo>                              **/
+/**         Arquivo: <grupo2-JulioLuanThiago.zip>                   **/
 /**                                                                 **/
 /**         <Julio Cesar Pereira Santos>                            **/
 /**         <Luan Costa de Oliveira>                                **/
@@ -51,30 +51,25 @@ public class jogoDaVelha {
     }
 
     static int imprimeMenuPrincipal() {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("| Escolha o modo de jogo:     |");
-        System.out.println("| 1) modo jogador vs jogador  |");
-        System.out.println("| 2) modo jogador vs maquina  |");
-        System.out.println("| 3) modo maquina vs maquina  |");
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        int mododeJogo = cap.nextInt();// depois recebera uma funcao 
-        int dificuldade = 0;
+
+        int mododeJogo = 0;
+
+        do {
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("| Escolha o modo de jogo:     |");
+            System.out.println("| 1) modo jogador vs jogador  |");
+            System.out.println("| 2) modo jogador vs maquina  |");
+            System.out.println("| 3) modo maquina vs maquina  |");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            mododeJogo = cap.nextInt();
+        } while (mododeJogo < 1 || mododeJogo > 3);
 
         switch (mododeJogo) {
             case 1:
                 modoJogador();
                 break;
             case 2:
-                System.out.println("Escolha a Dificuldade: ");
-                System.out.println("1) Modo Facil");
-                System.out.println("2) Modo Dificil");
-                dificuldade = cap.nextInt();
-
-                switch (dificuldade) {// Apenas testes 
-                    case 1:
-                        modoFacil();
-                        break;
-                }
+                modoFacil();
                 break;
             case 3:
                 modoMaquinavsMaquina();
@@ -83,8 +78,9 @@ public class jogoDaVelha {
         return mododeJogo;
     }
 
-    static int leiaCoordenadaLinha() {// sem saber se precisa de return
+    static int leiaCoordenadaLinha() {
         int linha = 0;
+
         do {
             System.out.print("Digite a linha: ");
             linha = cap.nextInt();
@@ -93,7 +89,7 @@ public class jogoDaVelha {
         return linha;
     }
 
-    static int leiaCoordenadaColuna() {// sem saber se precisa de return
+    static int leiaCoordenadaColuna() {
         int coluna = 0;
 
         do {
@@ -135,7 +131,7 @@ public class jogoDaVelha {
         return jogada;
     }
 
-    static boolean verificaVencedor(int linha, int coluna, int count) {// a funcao ta verificando todas as possibilidades de vitoria no tabuleiro
+    static boolean verificaVencedor(int count) {// a funcao ta verificando todas as possibilidades de vitoria no tabuleiro
         boolean vencedor = false;
         if (count % 2 == 0) { // vez do jogador X
             if (tabuleiro[0][0] == "X" && tabuleiro[1][1] == "X" && tabuleiro[2][2] == "X") {
@@ -218,7 +214,7 @@ public class jogoDaVelha {
             }
 
             String jogada = jogar(linha, coluna, count);
-            boolean vencedor = verificaVencedor(linha, coluna, count);
+            boolean vencedor = verificaVencedor(count);
 
             if (vencedor == true) {
                 if (count % 2 == 0) {
@@ -252,7 +248,6 @@ public class jogoDaVelha {
             count1++;
 
         } while (jogador1 < 3 && jogador2 < 3);
-        imprimePontuacao(jogador1, jogador2);
 
         if (jogador1 == 3) {
             System.out.println("Parabens, o Vencedor foi o jogador 1");
@@ -278,7 +273,6 @@ public class jogoDaVelha {
 
             if (posicao == false) {
                 do {
-                    System.out.println("Posicao Invalida");
                     linha = gerador.nextInt(3);
                     coluna = gerador.nextInt(3);
                     posicao = posicaoValida(linha, coluna, count);
@@ -287,7 +281,7 @@ public class jogoDaVelha {
             }
 
             String jogada = jogar(linha, coluna, count);
-            boolean vencedor = verificaVencedor(linha, coluna, count);
+            boolean vencedor = verificaVencedor(count);
 
             if (vencedor == true) {
                 if (count % 2 == 0) {
@@ -323,7 +317,6 @@ public class jogoDaVelha {
             count1++;
 
         } while (jogador1 < 3 && jogador2 < 3);
-        imprimePontuacao(jogador1, jogador2);
 
         if (jogador1 == 3) {
             System.out.println("Parabens, o Vencedor foi o jogador 1");
@@ -350,19 +343,24 @@ public class jogoDaVelha {
             boolean vencedor = false;
 
             if (count % 2 == 0) {
+
                 linha = leiaCoordenadaLinha();
                 coluna = leiaCoordenadaColuna();
                 jogadaUsuario(count, linha, coluna);
-                vencedor = verificaVencedor(linha, coluna, count);
+                vencedor = verificaVencedor(count);
+
             } else if (count % 2 == 1) {
+
                 linha = gerador.nextInt(3);
                 coluna = gerador.nextInt(3);
                 jogadaMaquinaFacil(count, linha, coluna);
-                vencedor = verificaVencedor(linha, coluna, count);
+                vencedor = verificaVencedor(count);
+
             }
 
             if (vencedor == true) {
                 if (count % 2 == 0) {
+
                     imprimirTabuleiro();
                     System.out.println("Jogador 1 venceu!");
                     jogador1++;
@@ -372,6 +370,7 @@ public class jogoDaVelha {
                     count1 = 0;
 
                 } else if (count % 2 == 1) {
+
                     imprimirTabuleiro();
                     System.out.println("Jogador 2 venceu!");
                     jogador2++;
@@ -386,10 +385,12 @@ public class jogoDaVelha {
             if (count1 == 9) {
                 boolean velha = verificaVelha(vencedor);
                 if (velha == true) {
+
                     System.out.println("Deu velha!");
                     inicializarTabuleiro();
                     count = 0;
                     count = 0;
+
                 }
             }
 
