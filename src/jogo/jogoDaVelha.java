@@ -332,7 +332,6 @@ public class jogoDaVelha {
         int coluna = 0;
 
         inicializarTabuleiro();
-        imprimirTabuleiro();
 
         int count = 0; // controlador de turnos do jogo
         int count1 = 0; // controlador para verificar se deu velha
