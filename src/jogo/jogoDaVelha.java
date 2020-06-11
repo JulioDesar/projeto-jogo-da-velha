@@ -1,18 +1,18 @@
 package jogo;
 
 /*********************************************************************/
-/** Centro Universitario Senac                                      **/
-/** TADS - 1o semestre de 2020                                      **/
-/** <Fernando de Alemida>                                           **/
+/**         Centro Universitario Senac                              **/
+/**         TADS - 1o semestre de 2020                              **/
+/**         <Fernando Almeida>                                      **/
 /**                                                                 **/
-/** Projeto SEMESTRAL I                                             **/
-/** Arquivo: <nome do arquivo>                                      **/
+/**         Projeto SEMESTRAL I                                     **/
+/**         Arquivo: <nome do arquivo>                              **/
 /**                                                                 **/
-/** <Julio Cesar Pereira Santos>                                    **/
-/** <Luan Costa de Oliveira>                                        **/
-/** <Thiago Gilabel de Souza>                                       **/
+/**         <Julio Cesar Pereira Santos>                            **/
+/**         <Luan Costa de Oliveira>                                **/
+/**         <Thiago Gilabel de Souza>                               **/
 /**                                                                 **/
-/** <23:59 do dia 14 de junho de 2020 (domingo).>                   **/
+/**         <23:59 do dia 13 de junho de 2020 (domingo)>            **/
 /*********************************************************************/
 
 import java.util.Scanner;
@@ -21,10 +21,6 @@ import java.util.Random;
 public class jogoDaVelha {
 
     static Scanner cap = new Scanner(System.in);
-
-    static int jogador1 = 0;
-    static int jogador2 = 0;
-
     static String[][] tabuleiro = new String[3][3];
     static Random gerador = new Random();
 
@@ -111,7 +107,7 @@ public class jogoDaVelha {
         return coluna;
     }
 
-    static void imprimePontuacao() {
+    static void imprimePontuacao(int jogador1, int jogador2) {
 
         System.out.println("");
         System.out.println("\tPontuação:\n");
@@ -198,6 +194,9 @@ public class jogoDaVelha {
 
     static void modoJogador() { // jogador vs jogador
 
+        int jogador1 = 0;
+        int jogador2 = 0;
+
         int count = 0;// count vai ter o dever de controlar o turno da partida, quando count for par é vez do jogador 1, quando for impar sera do jogador 2
         int count1 = 0;
         inicializarTabuleiro();
@@ -227,24 +226,21 @@ public class jogoDaVelha {
                     jogador1++;
                     count = -1;
                     count1 = 0;
-                    imprimePontuacao();
+                    imprimePontuacao(jogador1, jogador2);
                     inicializarTabuleiro();
                 } else if (count % 2 == 1) {
                     System.out.println("Jogador 2 venceu!");
                     jogador2++;
                     count = 0;
                     count1 = 0;
-                    imprimePontuacao();
+                    imprimePontuacao(jogador1, jogador2);
                     inicializarTabuleiro();
                 }
             }
 
-            count++;
-            count1++;
-
             if (count1 == 9) {
                 boolean velha = verificaVelha(vencedor);
-                if (velha == true) {                   
+                if (velha == true) {
                     imprimirTabuleiro();
                     System.out.println("Deu velha!");
                     inicializarTabuleiro();
@@ -252,9 +248,11 @@ public class jogoDaVelha {
                     count1 = 0;
                 }
             }
+            count++;
+            count1++;
 
-        } while (jogador1 < 3 || jogador2 < 3);
-        imprimePontuacao();
+        } while (jogador1 < 3 && jogador2 < 3);
+        imprimePontuacao(jogador1, jogador2);
 
         if (jogador1 == 3) {
             System.out.println("Parabens, o Vencedor foi o jogador 1");
@@ -264,6 +262,10 @@ public class jogoDaVelha {
     }
 
     static void modoMaquinavsMaquina() {
+
+        int jogador1 = 0;
+        int jogador2 = 0;
+
         int count = 0;// count vai ter o dever de controlar o turno da partida, quando count for par é vez do jogador 1, quando for impar sera do jogador 2
         int count1 = 0;
         inicializarTabuleiro();
@@ -294,7 +296,7 @@ public class jogoDaVelha {
                     jogador1++;
                     count = -1;
                     count1 = 0;
-                    imprimePontuacao();
+                    imprimePontuacao(jogador1, jogador2);
                     inicializarTabuleiro();
                 } else if (count % 2 == 1) {
                     imprimirTabuleiro();
@@ -302,13 +304,10 @@ public class jogoDaVelha {
                     jogador2++;
                     count = 0;
                     count1 = 0;
-                    imprimePontuacao();
+                    imprimePontuacao(jogador1, jogador2);
                     inicializarTabuleiro();
                 }
             }
-
-            count++;
-            count1++;
 
             if (count1 == 9) {
                 boolean velha = verificaVelha(vencedor);
@@ -320,9 +319,11 @@ public class jogoDaVelha {
                     count1 = 0;
                 }
             }
+            count++;
+            count1++;
 
         } while (jogador1 < 3 && jogador2 < 3);
-        imprimePontuacao();
+        imprimePontuacao(jogador1, jogador2);
 
         if (jogador1 == 3) {
             System.out.println("Parabens, o Vencedor foi o jogador 1");
@@ -332,71 +333,70 @@ public class jogoDaVelha {
     }
 
     static void modoFacil() {
+        int jogador1 = 0;
+        int jogador2 = 0;
+        int linha = 0;
+        int coluna = 0;
+
+        inicializarTabuleiro();
+        imprimirTabuleiro();
 
         int count = 0; // controlador de turnos do jogo
         int count1 = 0; // controlador para verificar se deu velha
-        inicializarTabuleiro();
 
         do {
+
             imprimirTabuleiro();
-            int linha = leiaCoordenadaLinha();
-            int coluna = leiaCoordenadaColuna();
-            jogadaUsuario(count, linha, coluna);
-            boolean vencedor = verificaVencedor(linha, coluna, count);
+            boolean vencedor = false;
+
+            if (count % 2 == 0) {
+                linha = leiaCoordenadaLinha();
+                coluna = leiaCoordenadaColuna();
+                jogadaUsuario(count, linha, coluna);
+                vencedor = verificaVencedor(linha, coluna, count);
+            } else if (count % 2 == 1) {
+                linha = gerador.nextInt(3);
+                coluna = gerador.nextInt(3);
+                jogadaMaquinaFacil(count, linha, coluna);
+                vencedor = verificaVencedor(linha, coluna, count);
+            }
 
             if (vencedor == true) {
                 if (count % 2 == 0) {
                     imprimirTabuleiro();
                     System.out.println("Jogador 1 venceu!");
                     jogador1++;
-                    imprimePontuacao();
-                    modoFacil();
+                    imprimePontuacao(jogador1, jogador2);
+                    inicializarTabuleiro();
+                    count = -1;
+                    count1 = 0;
+
                 } else if (count % 2 == 1) {
                     imprimirTabuleiro();
                     System.out.println("Jogador 2 venceu!");
                     jogador2++;
-                    imprimePontuacao();
-                    modoFacil();
+                    imprimePontuacao(jogador1, jogador2);
+                    inicializarTabuleiro();
+                    count = 0;
+                    count1 = 0;
 
                 }
             }
-            count++;
-            count1++;
-            linha = gerador.nextInt(3);
-            coluna = gerador.nextInt(3);
-            jogadaMaquinaFacil(count, linha, coluna);
-            vencedor = verificaVencedor(linha, coluna, count);
-
-            if (vencedor == true) {
-                if (count % 2 == 0) {
-                    imprimirTabuleiro();
-                    System.out.println("Jogador 1 venceu!");
-                    jogador1++;
-                    imprimePontuacao();
-                    modoFacil();
-                } else if (count % 2 == 1) {
-                    imprimirTabuleiro();
-                    System.out.println("Jogador 2 venceu!");
-                    jogador2++;
-                    imprimePontuacao();
-                    modoFacil();
-                }
-            }
-
-            count++;
-            count1++;
 
             if (count1 == 9) {
                 boolean velha = verificaVelha(vencedor);
                 if (velha == true) {
                     System.out.println("Deu velha!");
                     inicializarTabuleiro();
-                    modoFacil();
+                    count = 0;
+                    count = 0;
                 }
             }
 
+            count++;
+            count1++;
+
         } while (jogador1 < 3 && jogador2 < 3);
-        imprimePontuacao();
 
         if (jogador1 == 3) {
             System.out.println("Parabens, o Vencedor foi o jogador 1");
