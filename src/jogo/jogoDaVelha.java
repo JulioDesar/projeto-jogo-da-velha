@@ -388,7 +388,7 @@ public class jogoDaVelha {
                     System.out.println("Deu velha!");
                     inicializarTabuleiro();
                     count = 0;
-                    count = 0;
+                    count1 = 0;
 
                 }
             }
